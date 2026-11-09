@@ -1763,14 +1763,6 @@ class OmniDiffusionConfig:
                             "Using explicitly selected diffusion pipeline %r with component-level configuration.",
                             self.model_class_name,
                         )
-                    # Some native checkpoints (for example the Flux3
-                    # format) intentionally contain only component weights
-                    # and configs. When stage resolution or the caller has
-                    # already selected a registered pipeline, that explicit
-                    # class is sufficient to continue loading without a
-                    # top-level Hugging Face config.
-                    elif self.model_class_name is not None:
-                        self.set_tf_model_config(TransformerConfig())
                         self.update_multimodal_support()
                         return
                     raise ValueError(f"Could not find config.json or a Diffusers pipeline index for {self.model}")

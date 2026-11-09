@@ -55,6 +55,19 @@ def test_direct_config_extras_are_independent_dicts():
     assert second.extras == {}
 
 
+def test_explicit_pipeline_with_component_only_checkpoint_resolves(tmp_path):
+    # A registered pipeline selected explicitly may load from a repository
+    # with only component configs (no root config.json or model_index.json).
+    (tmp_path / "transformer").mkdir()
+    (tmp_path / "transformer" / "config.json").write_text(json.dumps({"_class_name": "X", "hidden_size": 8}))
+    config = OmniDiffusionConfig(model=str(tmp_path), model_class_name="Flux2KleinPipeline")
+
+    config.enrich_config()
+
+    assert config.model_class_name == "Flux2KleinPipeline"
+    assert config.tf_model_config.get("hidden_size") == 8
+
+
 def test_direct_config_preserves_explicit_extras():
     config = OmniDiffusionConfig(model="test-model", extras={"prefix_kv_cache_dtype": "fp8"})
 
