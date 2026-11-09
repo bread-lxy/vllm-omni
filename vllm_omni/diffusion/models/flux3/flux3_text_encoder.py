@@ -47,11 +47,12 @@ class Flux3TextEncoder(nn.Module):
 
     Args:
         text_encoder: a loaded ``Qwen3VLForConditionalGeneration``.
-        tokenizer: the matching tokenizer.
+        processor: the matching Qwen3-VL processor; its tokenizer builds the prompt tokens.
         context_in_dim: width of ``ctx`` expected by the DiT ``txt_in`` layer.
         vec_in_dim: width of the zero ``vector`` tensor, or ``None`` when the DiT
             has no pooled-vector input projection.
         max_sequence_length: token count ``n_tokens`` for ``ctx``.
+        pad_multiple: pad the token count up to a multiple of this value.
         output_layer: indices into ``hidden_states`` to stack for ``ctx``.
             Defaults to ``[4, 8, 12, 16, 20, 24, 28, 32]``.
     """
